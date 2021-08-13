@@ -1,14 +1,8 @@
 # CarND-Path-Planning-Project
 Self-Driving Car Engineer Nanodegree Program
+
+![Driving](images/self-driving.GIF)
    
-### Simulator.
-You can download the Term3 Simulator which contains the Path Planning Project from the [releases tab (https://github.com/udacity/self-driving-car-sim/releases/tag/T3_v1.2).  
-
-To run the simulator on Mac/Linux, first make the binary file executable with the following command:
-```shell
-sudo chmod u+x {simulator_file_name}
-```
-
 ### Goals
 In this project your goal is to safely navigate around a virtual highway with other traffic that is driving +-10 MPH of the 50 MPH speed limit. You will be provided the car's localization and sensor fusion data, there is also a sparse map list of waypoints around the highway. The car should try to go as close as possible to the 50 MPH speed limit, which means passing slower traffic when possible, note that other cars will try to change lanes too. The car should avoid hitting other cars at all cost as well as driving inside of the marked road lanes at all times, unless going from one lane to another. The car should be able to make one complete loop around the 6946m highway. Since the car is trying to go 50 MPH, it should take a little over 5 minutes to complete 1 loop. Also the car should not experience total acceleration over 10 m/s^2 and jerk that is greater than 10 m/s^3.
 
@@ -111,36 +105,33 @@ Note: regardless of the changes you make, your project must be buildable using
 cmake and make!
 
 
-## Call for IDE Profiles Pull Requests
 
-Help your fellow students!
+## Reflection
 
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to ensure
-that students don't feel pressured to use one IDE or another.
+Implemented the route planning system to generate the trajectories with information from the fusion of sensors, the map, and the state of the car. The system helps the vehicle navigate safely on a simulated road with other traffic. This project uses the provided code from the seed project. Took a lot of the concepts from the Q&A video provided by Udacity. I added additional comments to the code to improve the readability. The functionality is separated into 3 main parts: Prediction, Behaviour Planning and Trajectory Calculation.
 
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
 
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
 
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
 
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
+## Implementation
+The implementation is composed of two main parts which are the prediction and behavior planning, and the trajectory generation. See details below.
 
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
 
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
+#### Prediction / Behavior line 129 to line 237
+
+Prediction behavior  and planning have been implemented; based on the current state of the car and the sensor fusion data, the system decides what the car should do. By interpreting and understanding the surrounding environment, you find the best possible behavior to adopt to drive safely and efficiently: We first look at the cars before us and consider changing lanes if the road is blocked. Otherwise, the car stays in the same lane and continues to accelerate until it reaches the speed limit by checking the safety of the lanes based on the distance of the cars and the current speed. If no other lane is safe to drive, the car remains in its lane and adjusting speed to match the vehicle's speed in front.
+
+
+#### Trajectory Line 242 to 305
+
+The path calculation is started using the spline library. To facilitate the calculation, the map coordinates are transformed into local car coordinates. The points are then sampled from the spline result and added to the previous remaining waypoints to ensure more continuity on the path.
+
+
+
+
+![path-planning](images/path-planning.gif)
+
+
+
 
 
